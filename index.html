@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Nintendo Switch | Простые инструкции для прошитой консоли</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f5f7fb;
+            color: #1a202c;
+            line-height: 1.5;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(8px);
+        }
+
+        .header h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 16px;
+            color: #2d3748;
+        }
+
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            height: calc(100vh - 64px);
+            position: sticky;
+            top: 64px;
+            overflow-y: auto;
+            padding: 24px 16px;
+            flex-shrink: 0;
+        }
+
+        .sidebar h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #718096;
+            margin-bottom: 16px;
+            padding-left: 12px;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 4px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 12px;
+            color: #2d3748;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover {
+            background: #edf2f7;
+            color: #e33c2c;
+        }
+
+        .nav-link.active {
+    background: #e0e7ff;
+    color: #1e3c72;
+    border-left: 3px solid #1e3c72;
+
+        }
+
+        .content {
+            flex: 1;
+            min-width: 0;
+            padding: 32px 40px;
+            max-width: 950px;
+        }
+
+        .instruction-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .instruction-card h2 {
+            font-size: 1.75rem;
+            margin-bottom: 12px;
+            color: #1a202c;
+            border-bottom: 3px solid #fee2e2;
+            padding-bottom: 12px;
+            display: inline-block;
+        }
+
+        .instruction-meta {
+            color: #718096;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+
+        .instruction-content h3 {
+            font-size: 1.3rem;
+            margin: 24px 0 12px 0;
+            color: #2d3748;
+        }
+
+        .instruction-content p {
+            margin-bottom: 16px;
+            font-size: 1rem;
+        }
+
+        .instruction-content ul, .instruction-content ol {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        .instruction-content li {
+            margin: 8px 0;
+        }
+
+        .instruction-content .tip {
+            background: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .instruction-content .warning {
+            background: #fef9c3;
+            border-left: 4px solid #eab308;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .instruction-content .danger {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .instruction-content code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        .instruction-content a {
+    color: #2563eb;
+    border-bottom: 1px solid #bfdbfe;
+}
+.instruction-content a:hover {
+    color: #1d4ed8;
+
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -300px;
+                top: 64px;
+                height: calc(100vh - 64px);
+                transition: left 0.3s ease;
+                z-index: 20;
+                background: white;
+                width: 280px;
+            }
+
+            .sidebar.open {
+                left: 0;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .instruction-card {
+                padding: 20px;
+            }
+
+            .instruction-card h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 15;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px;
+            color: #718096;
+            font-size: 0.8rem;
+            border-top: 1px solid #e2e8f0;
+            background: white;
+            margin-top: 32px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <h1>🔧 Nintendo Switch | Инструкции для прошитой консоли</h1>
+</div>
+
+<div class="container">
+    <aside class="sidebar" id="sidebar">
+        <h3>📌 ВСЕ ИНСТРУКЦИИ</h3>
+        <ul class="nav-list" id="navList"></ul>
+    </aside>
+
+    <main class="content" id="content"></main>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<footer>
+    📖 Инструкции обновляются | Для ознакомительных целей | Простые ответы на сложные вопросы
+</footer>
+
+<script>
+    // БАЗА ДАННЫХ ВСЕХ ИНСТРУКЦИЙ (13 штук)
+    const instructions = [
+        {
+            id: "torrent",
+            title: "🎮 Как скачать игру через торрент",
+            date: "Мая 2026",
+            content: `
+                <h3>Что нужно знать перед началом</h3>
+                <p>Для работы на территории РФ вам понадобится компьютер с Windows/Mac. В браузере (например, Chrome) необходимо установить специальный плагин или воспользоваться любым известным вам способом обхода блокировок.</p>
+                <p>👉 <a href="https://chromewebstore.google.com/detail/%D1%80%D1%83%D1%82%D1%80%D0%B5%D0%BA%D0%B5%D1%80-%D0%BE%D1%84%D0%B8%D1%86%D0%B8%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D0%BF%D0%BB%D0%B0%D0%B3/fddjpichkajmnkjhcmpbbjdmmcodnkej" target="_blank" rel="noopener noreferrer">Установить плагин RuTracker для Chrome</a></p>
+                
+                <div class="warning">
+                    ⚠️ <strong>Важно:</strong> Всегда проверяйте файлы антивирусом после скачивания. Скачивайте игры только из проверенных источников.
+                </div>
+
+                <h3>Шаг 1: Установите торрент-клиент</h3>
+                <p>Сначала вам нужно установить программу для работы с торрент-файлами. Например, вы можете скачать бесплатную версию <strong>uTorrent Basic</strong>.</p>
+                <p>👉 <a href="https://www.utorrent.com/intl/ru/web/compare/" target="_blank" rel="noopener noreferrer">Скачать uTorrent Basic (официальный сайт)</a></p>
+
+                <h3>Шаг 2: Зайдите на сайт RuTracker</h3>
+                <p>Перейдите на сайт <strong>RuTracker</strong>. Если у вас ещё нет аккаунта, зарегистрируйтесь. Если аккаунт уже есть, просто войдите, используя свои данные.</p>
+                <p>👉 <a href="https://rutracker.org/forum/index.php" target="_blank" rel="noopener noreferrer">Перейти на RuTracker.org</a></p>
+
+                <h3>Шаг 3: Найдите нужную игру</h3>
+                <p>Введите название игры в строку поиска на сайте RuTracker. Обычно поиск находится в верхней части страницы.</p>
+                <div class="tip">💡 <strong>Совет:</strong> Обращайте внимание на количество раздач (сидов). Чем их больше, тем выше скорость скачивания.</div>
+
+                <h3>Шаг 4: Скачайте торрент-файл</h3>
+                <ol><li>Нажмите на название нужной раздачи, чтобы открыть её страницу.</li><li>Найдите и нажмите кнопку <strong>"Скачать .torrent"</strong>.</li></ol>
+
+                <h3>Шаг 5: Откройте торрент-файл в клиенте</h3>
+                <p>Найдите скачанный файл <strong>.torrent</strong> на вашем компьютере (обычно он сохраняется в папке <strong>"Загрузки"</strong>). Дважды кликните по нему левой кнопкой мыши. Файл автоматически откроется в установленном торрент-клиенте.</p>
+
+                <h3>Шаг 6: Выберите папку для загрузки</h3>
+                <p>В торрент-клиенте вам будет предложено выбрать папку, куда будут сохранены файлы игры. Укажите удобное место на вашем компьютере (например, диск D: или папку "Игры") и подтвердите загрузку.</p>
+
+                <h3>Шаг 7: Дождитесь завершения загрузки</h3>
+                <p>Торрент-клиент начнёт скачивать файлы. Подождите, пока загрузка завершится. Скорость зависит от вашего интернет-соединения и количества участников раздачи.</p>
+
+                `
+        },
+        {
+            id: "direct_download",
+            title: "📥 Как скачать игры напрямую на ПК без торрента",
+            date: "Мая 2026",
+            content: `
+                <h3>Пошаговая инструкция</h3>
+                <p>Если вы хотите скачать игры для Nintendo Switch напрямую на компьютер, без использования торрент-клиентов, выполните следующие шаги:</p>
+
+                <h3>Шаг 1: Перейдите на сайт с играми</h3>
+                <p>Откройте сайт <strong>not.ultranx.ru</strong>. На данный момент доступ к сайту бесплатный, и регистрация не требуется. Сайт предлагает прямые ссылки для скачивания игр.</p>
+                <p>👉 <a href="https://not.ultranx.ru/ru" target="_blank" rel="noopener noreferrer">Перейти на not.ultranx.ru</a></p>
+
+                <h3>Шаг 2: Найдите нужную игру</h3>
+                <p>Используйте строку поиска на сайте, чтобы найти интересующую вас игру. Перейдите на страницу игры.</p>
+
+                <h3>Шаг 3: Скачайте игру на компьютер</h3>
+                <p>На странице выбранной игры нажмите кнопку "Скачать всё", чтобы загрузить все необходимые файлы на ваш компьютер. Дождитесь завершения загрузки.</p>
+
+                <h3>Шаг 4: Установите игру на Nintendo Switch</h3>
+                <p>После того как игра будет скачана, установите её на консоль, следуя инструкции по установке игр.</p>
+
+                <div class="warning">⚠️ <strong>Важная информация:</strong> На сайте представлено множество игр, но не все. Если нужной игры нет, попробуйте найти её на других ресурсах, например, через торренты.</div>
+            `
+        },
+        {
+            id: "install_switch",
+            title: "💻 Как установить игры на Nintendo Switch через ПК",
+            date: "Мая 2026",
+            content: `
+                <h3>Что потребуется для установки:</h3>
+                <ul><li>Кабель Type-C, поддерживающий передачу данных. Обратите внимание: не все кабели могут подойти. Пробуйте разные варианты.</li><li>Для MacOS — программа <a href="https://www.android.com/better-together/quick-share-app/" target="_blank" rel="noopener noreferrer">Android File Transfer</a> или <a href="https://openmtp.ganeshrvel.com/" target="_blank" rel="noopener noreferrer">OpenMTP</a>.</li><li>Файл игры в формате <strong>.nsp, .nsz или .xci</strong>.</li></ul>
+
+                <h3>Важное замечание для пользователей MacOS</h3>
+                <p>MacOS может распознавать консоль как устройство, которое должно заряжать Mac. Чтобы обойти это: убедитесь, что консоль находится в режиме сна, подключите кабель к "спящей" консоли.</p>
+
+                <h3>Шаги по установке игр:</h3>
+                <ol><li><strong>Скачайте файл игры</strong> на свой компьютер.</li><li><strong>Подключите консоль к компьютеру</strong> через кабель Type-C. На консоли откройте HB Menu и запустите приложение DB Installer. Выберите опцию Run MTP Responder.</li><li><strong>Настройте соединение на компьютере</strong> — должно появиться окно с доступом к файлам консоли.</li><li><strong>Скопируйте файлы игры</strong> в папку SD Card Install или Nand Install (где достаточно места).</li><li><strong>Завершение установки</strong> — после копирования проверьте экран консоли на наличие ошибок и отключите консоль.</li></ol>
+
+                <h3>Настройка подключения через DBI</h3>
+                <p>Откройте DBI и выберите "Просмотр HTTP/FTP/Github сервера...". Введите адрес: <code>https://dbi.ultranx.ru/link/ваш_логин/ваш_пароль</code>. Замените на свои данные. Нажмите "+" на правом Joy-Con.</p>
+                <p>После успешного подключения удалите из адреса часть <code>/link/логин/пароль</code>, оставив <code>https://dbi.ultranx.ru</code>.</p>
+
+                <h3>Загрузка игр из репозитория</h3>
+                <p>Зайдите в сервер → "Все игры". Используйте поиск (ZL+ZR). Выберите игру, нажмите "A". Для выбора файлов: "X" для отдельных, "Y" для всех. Дважды нажмите "A" для загрузки. Дождитесь завершения — не сворачивайте приложение!</p>
+            `
+        },
+        {
+            id: "switch_sys_emu",
+            title: "🔄 Как переключаться между SysNAND и EmuNAND",
+            date: "Мая 2026",
+            content: `
+                <h3>Переключение на лицензионную систему (SysNAND)</h3>
+                <ol><li>Перезагрузите консоль.</li><li>Нажмите кнопку <strong>уменьшения громкости</strong> при появлении заставки Stratosphere.</li><li>Выберите <strong>Reboot</strong> → <strong>OFW</strong>. (Другие кнопки не трогайте!)</li><li>Консоль загрузится в лицензионную систему.</li></ol>
+
+                <h3>Переключение обратно на прошитую систему (EmuNAND)</h3>
+                <p>Просто перезапустите консоль. По умолчанию система автоматически загрузится в прошитый режим.</p>
+
+                <h3>Важные замечания</h3>
+                <div class="warning">⚠️ <strong>Инструкция актуальна только при настроенном EmuNAND.</strong> Чтобы проверить: войдите в Hekate → emuMMC → emuMMC Info & Selection. Если статус Enabled! подсвечен зелёным — всё работает.</div>
+                <div class="danger">⛔ <strong>Обновление лицензионной системы через настройки может привести к проблемам!</strong> Если вы обновите лицензионную систему, консоль может перестать работать до обновления прошитой системы.</div>
+                <div class="tip">💡 В лицензионной системе работают только иностранные аккаунты. Рекомендуемые регионы: США, Великобритания, Польша. Создавайте аккаунт на <a href="https://accounts.nintendo.com" target="_blank" rel="noopener noreferrer">accounts.nintendo.com</a>.</div>
+            `
+        },
+        {
+            id: "backup",
+            title: "💾 Как сделать бэкап SysNAND и EmuNAND",
+            date: "Мая 2026",
+            content: `
+                <h3>Что понадобится?</h3>
+                <ul><li>Консоль с установленным Hekate</li><li>ПК с Windows</li><li>Кардридер для microSD</li></ul>
+
+                <h3>Часть 1: Создание бэкапа SysNAND</h3>
+                <ol><li>Войдите в Hekate (кнопка уменьшения громкости при заставке).</li><li>Перейдите в <strong>Tools</strong> → <strong>Backup eMMC</strong>.</li><li>Сначала выберите <strong>eMMC BOOT0 & BOOT1</strong>, дождитесь завершения.</li><li>Затем выберите <strong>eMMC RAW GPP</strong>, дождитесь завершения.</li><li>Бэкап сохранится на microSD в папку <strong>backup</strong>.</li><li>Перенесите папку на ПК и удалите её с карты памяти.</li></ol>
+
+                <h3>Часть 2: Создание бэкапа EmuNAND</h3>
+                <div class="warning">⚠️ Пропустите этот раздел, если у вас нет EmuNAND (папки EmuMMC на карте).</div>
+                <p><strong>Опционально:</strong> Для уменьшения размера бэкапа можно удалить файлы из <code>EmuMMC/SD00/Contents/registered</code> — это удалит установленные игры на карте.</p>
+                <p>Просто перенесите <strong>все файлы</strong> с карты памяти в безопасное место на ПК.</p>
+                <div class="tip">💡 Храните бэкапы в надёжном месте: внешний жёсткий диск, облачное хранилище или отдельный раздел на ПК.</div>
+            `
+        },
+        {
+            id: "transfer_card",
+            title: "♻️ Как перенести систему и игры на карту большего объёма",
+            date: "Мая 2026",
+            content: `
+                <h3>Что понадобится?</h3>
+                <ul><li>Новая оригинальная карта памяти (Samsung, SanDisk, Netac, Lexar, Kingston Canvas Select Plus)</li><li>Качественный кардридер</li><li>ПК с Windows</li><li>Программа для форматирования: <a href="https://rufus.ie/ru/" target="_blank" rel="noopener noreferrer">Rufus</a> или <a href="https://www.softpedia.com/get/System/Hard-Disk-Utils/FAT32format-GUI.shtml" target="_blank" rel="noopener noreferrer">GUIFormat</a></li></ul>
+
+                <h3>Шаги по переносу:</h3>
+                <ol><li><strong>Скопируйте все файлы</strong> со старой карты на ПК.</li><li><strong>Отформатируйте новую карту</strong> в FAT32 с помощью Rufus или GUIFormat.</li><li><strong>Скопируйте все файлы</strong> с ПК на новую карту.</li><li><strong>Вставьте новую карту</strong> в консоль и проверьте работу.</li></ol>
+
+                <div class="danger">⛔ Если консоль не запускается, проверьте: качество карты, корректность форматирования (только FAT32), надёжность кардридера.</div>
+            `
+        },
+        {
+            id: "choose_card",
+            title: "❓ Выбор правильной карты памяти для прошитой Switch",
+            date: "Мая 2026",
+            content: `
+                <h3>На что обратить внимание:</h3>
+                <ul><li><strong>Покупайте в надёжных магазинах</strong> — пометка "оригинал" на маркетплейсах не гарантирует подлинность.</li><li><strong>Проверенные бренды:</strong> Samsung, SanDisk, Netac, Lexar, Kingston (кроме Canvas Go).</li></ul>
+
+                <h3>Важная информация про скорость</h3>
+                <p>Nintendo Switch поддерживает только стандарт <strong>UHS-I</strong>. Реальный лимит консоли — около <strong>95 МБ/с</strong>. Более быстрые карты (UHS-II) не дадут прироста.</p>
+                <div class="tip">💡 <strong>Оптимальный выбор:</strong> карты стандарта UHS-I (U3/V30) со скоростью чтения от 60 до 95 МБ/с. Переплачивать за Extreme Pro или UHS-II не имеет смысла.</div>
+            `
+        },
+        {
+            id: "mods",
+            title: "⚙️ Как устанавливать игры с модами и локализацией",
+            date: "Мая 2026",
+            content: `
+                <p>Моды могут быть вшитыми в дистрибутив или представлять собой отдельные файлы. В раздаче с игрой это указывается.</p>
+                <ul><li><strong>Если моды вшиты</strong> — просто следуйте стандартной инструкции по установке игры.</li><li><strong>Если моды отдельными файлами</strong> — сначала установите дистрибутив игры, затем откройте на ПК корневую папку "SD Card" и закиньте файлы мода по пути <code>Sd card/atmosphere/content</code> (если в раздаче не сказано иного).</li></ul>
+                <div class="tip">💡 После того как файлы распакуются на консоль, в игре появится локализация или контент, добавленный модом.</div>
+            `
+        },
+        {
+            id: "hbmenu",
+            title: "🌀 Как зайти в HBmenu и создать ярлык",
+            date: "Мая 2026",
+            content: `
+                <h3>Как зайти в HBmenu, если EmuNAND только создан и ярлыка нет</h3>
+                <p>Наведитесь на <strong>Альбом</strong> (синий значок внизу в главном меню) и, зажимая <strong>правый бампер (кнопка R на джойконе)</strong>, зайдите в него, нажав кнопку <strong>А</strong>.</p>
+
+                <h3>Как создать ярлык в главном меню</h3>
+                <p>Зайдите в <strong>DBI</strong> → "Инструкции" → "Вывести ярлык HBmenu". По завершению ярлык появится в меню.</p>
+            `
+        },
+        {
+            id: "update",
+            title: "🚀 Инструкция по обновлению системы",
+            date: "Мая 2026",
+            content: `
+                <div class="warning">⚠️ <strong>Важная информация:</strong> Поддерживаемая версия ПО — Nintendo 22.1.0. Сначала обновляйте EmuNAND, затем SysNAND. Все действия на ваш страх и риск.</div>
+
+                <h3>Что понадобится:</h3>
+                <ul><li>ПК с Windows</li><li>Качественный кардридер</li><li>Файлы: Актуальная система и стабильная сборка Stratosphere</li></ul>
+
+                <h3>Шаги по обновлению:</h3>
+                <ol><li>Скачайте и распакуйте файлы на ПК.</li><li>Выключите консоль через Hekate (Power Off).</li><li>Извлеките карту памяти и подключите к ПК.</li><li>Скопируйте папку Firmware x.x.x в корень карты.</li><li><strong>Очистите карту</strong> (оставьте только папки Nintendo, EmuMMC, эмуляторы, JKSV).</li><li>Запустите <strong>install.bat</strong> из архива Stratosphere, укажите букву диска карты памяти.</li><li>Вставьте карту в консоль и включите её.</li><li>Запустите Hekate → Payloads → Lockpick_RCM.bin → Dump from SysNAND.</li><li>Настройте ярлыки через DBI (создайте ярлык для DBI и HBmenu).</li><li>Зайдите в HBmenu → Daybreak → выберите папку Firmware x.x.x → следуйте инструкциям.</li></ol>
+            `
+        },
+        {
+            id: "dont_do",
+            title: "⛔️ Что нельзя делать с прошитой консолью",
+            date: "Мая 2026",
+            content: `
+                <div class="danger">⛔ <strong>Не вытаскивайте карту памяти microSD на включённой консоли</strong> — это может повредить файловую систему. Всегда выключайте консоль полностью.</div>
+                <div class="danger">⛔ <strong>Не вставляйте карту памяти в Mac, Android, видеорегистраторы и другие устройства</strong> — это повредит файловую систему.</div>
+                <div class="danger">⛔ <strong>Не пользуйтесь низкокачественными кардридерами</strong> — они могут повредить карту памяти.</div>
+                <div class="danger">⛔ <strong>Не обновляйте систему через DBI или сторонние серверы</strong> — только через ПК.</div>
+                <div class="danger">⛔ <strong>Не обновляйте лицензионную систему без проверки совместимости</strong> — может привести к сбоям.</div>
+                <div class="danger">⛔ <strong>Не заряжайте консоль быстрыми зарядками или дешёвыми аналогами</strong> — можно сжечь контроллер питания.</div>
+                <div class="tip">💡 <strong>Для зарядки используйте:</strong> оригинальное зарядное устройство или качественные зарядки мощностью менее 35W.</div>
+            `
+        },
+        {
+            id: "game_not_launch",
+            title: "⛔️ FAQ: Что делать, если игра не запускается",
+            date: "Мая 2026",
+            content: `
+                <h3>Игра не установилась полностью</h3>
+                <p>Признак: иконка облака или картриджа над игрой.</p>
+                <div class="tip">✔️ Решение: удалите текущую установку и переустановите все файлы, включая BASE-файл.</div>
+
+                <h3>Игра требует включения режима полёта</h3>
+                <div class="tip">✔️ Решение: включите режим полёта в настройках консоли.</div>
+
+                <h3>Ошибка, которую можно пропустить</h3>
+                <div class="tip">✔️ Решение: просто нажмите «Пропустить».</div>
+
+                <h3>Проблемы с модами или переводами после обновления</h3>
+                <div class="tip">✔️ Решение: установите предыдущую версию игры или удалите моды.</div>
+
+                <h3>Устаревшая версия ПО</h3>
+                <div class="tip">✔️ Решение: проверьте минимальные требования и обновите систему.</div>
+            `
+        },
+        {
+            id: "install_errors",
+            title: "⚠️ Почему игры могут не устанавливаться",
+            date: "Мая 2026",
+            content: `
+                <h3>Устаревшее ПО консоли</h3>
+                <div class="tip">✔️ Решение: проверьте требования игры и обновите прошивку.</div>
+
+                <h3>Иконка "вечной" загрузки</h3>
+                <div class="tip">✔️ Решение: удалите некорректную установку через "Настройки" → "Управление данными" → "Программы" и повторите установку.</div>
+
+                <h3>Прерывание установки</h3>
+                <div class="tip">✔️ Решение: проверьте надёжность кабеля или стабильность Wi-Fi, повторите попытку.</div>
+
+                <h3>DBI "пропускает" файлы</h3>
+                <div class="tip">✔️ Решение: повторите попытку, смените кабель или USB-порт, перезапустите компьютер.</div>
+
+                <h3>Недостаточно места на карте</h3>
+                <div class="tip">✔️ Решение: освободите место или выберите другой раздел для установки.</div>
+            `
+        }
+    ];
+
+    // Функция отображения навигации
+    function renderNav(activeId) {
+        const navList = document.getElementById('navList');
+        navList.innerHTML = '';
+        instructions.forEach(inst => {
+            const li = document.createElement('li');
+            li.className = 'nav-item';
+            const a = document.createElement('a');
+            a.className = `nav-link ${activeId === inst.id ? 'active' : ''}`;
+            a.textContent = inst.title;
+            a.onclick = (e) => {
+                e.preventDefault();
+                showInstruction(inst.id);
+                if (window.innerWidth <= 768) {
+                    closeMobileMenu();
+                }
+            };
+            li.appendChild(a);
+            navList.appendChild(li);
+        });
+    }
+
+    // Показать выбранную инструкцию
+    function showInstruction(id) {
+        const inst = instructions.find(i => i.id === id);
+        if (!inst) return;
+
+        const contentDiv = document.getElementById('content');
+        contentDiv.innerHTML = `
+            <div class="instruction-card">
+                <h2>${inst.title}</h2>
+                <div class="instruction-meta">📅 ${inst.date}</div>
+                <div class="instruction-content">${inst.content}</div>
+            </div>
+        `;
+        
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+            if (link.textContent === inst.title) {
+                link.classList.add('active');
+            }
+        });
+        
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Мобильное меню
+    function initMobileMenu() {
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        
+        function openMobileMenu() {
+            sidebar.classList.add('open');
+            overlay.classList.add('active');
+        }
+        
+        window.closeMobileMenu = function() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        };
+        
+        menuToggle.addEventListener('click', openMobileMenu);
+        overlay.addEventListener('click', window.closeMobileMenu);
+    }
+    
+    // Загрузка первой инструкции
+    function init() {
+        renderNav(instructions[0].id);
+        showInstruction(instructions[0].id);
+        initMobileMenu();
+    }
+    
+    init();
+</script>
+</body>
+</html>
